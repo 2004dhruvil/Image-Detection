@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepFake Detector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="background-animation">
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+
+    <div class="nav-bar">
+        <span class="user-greeting">Hello, {{ user.username }}!</span>
+        <div>
+            <a href="{{ url_for('history') }}" class="nav-link" style="text-decoration: none; color: #fff; background: rgba(255, 255, 255, 0.1); padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; margin-right: 10px;"><i class="fas fa-history"></i> History</a>
+            <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="container glass-panel">
+        <header>
+            <h1 class="glow-text">DeepFake <span class="highlight">Detector</span></h1>
+            <p class="subtitle">Upload an image to verify its authenticity with AI</p>
+        </header>
+
+        <main>
+            <div class="upload-area" id="drop-zone">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3>Drag & Drop or Click to Upload</h3>
+                <p>Supports JPG, PNG, JPEG</p>
+                <input type="file" id="file-input" hidden accept="image/*">
+            </div>
+
+            <div class="preview-container" id="preview-container" style="display: none;">
+                <img id="image-preview" src="" alt="Image Preview">
+                <button id="remove-btn" class="icon-btn"><i class="fas fa-times"></i></button>
+                <div class="loading-overlay" id="loading-overlay">
+                    <div class="scanner-line"></div>
+                    <div class="loading-text">Analyzing Patterns...</div>
+                </div>
+            </div>
+
+            <button id="analyze-btn" class="cta-btn" disabled>
+                <span>Analyze Image</span>
+                <div class="btn-glow"></div>
+            </button>
+        </main>
+
+        <div id="result-modal" class="modal">
+            <div class="modal-content glass-panel">
+                <span class="close-modal">&times;</span>
+                <div class="result-icon" id="result-icon"></div>
+                <h2 id="result-title"></h2>
+                <div class="confidence-meter">
+                    <div class="meter-bar" id="meter-bar"></div>
+                </div>
+                <p id="result-confidence"></p>
+                <p id="result-theory" class="theory-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 DeepFake AI Project</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

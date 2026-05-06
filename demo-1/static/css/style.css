@@ -1,0 +1,425 @@
+:root {
+    --bg-color: #050510;
+    --primary-color: #00f2ff;
+    --secondary-color: #bd00ff;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #ffffff;
+    --text-muted: #a0a0b0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Background Animation */
+.background-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.cube {
+    position: absolute;
+    top: 80vh;
+    left: 45vw;
+    width: 10px;
+    height: 10px;
+    border: solid 1px var(--primary-color);
+    transform-origin: top left;
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);
+    animation: cube 12s ease-in forwards infinite;
+}
+
+.cube:nth-child(2n) {
+    border-color: var(--secondary-color);
+}
+
+.cube:nth-child(2) {
+    animation-delay: 2s;
+    left: 25vw;
+    top: 40vh;
+}
+
+.cube:nth-child(3) {
+    animation-delay: 4s;
+    left: 75vw;
+    top: 50vh;
+}
+
+.cube:nth-child(4) {
+    animation-delay: 6s;
+    left: 90vw;
+    top: 10vh;
+}
+
+@keyframes cube {
+    from {
+        transform: scale(0) rotate(0deg) translate(-50%, -50%);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(20) rotate(960deg) translate(-50%, -50%);
+        opacity: 0;
+    }
+}
+
+/* Glassmorphism Container */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    padding: 2rem;
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+header {
+    margin-bottom: 2rem;
+}
+
+.glow-text {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 2px dashed var(--glass-border);
+    border-radius: 12px;
+    padding: 3rem 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 1.5rem;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    border-color: var(--primary-color);
+    background: rgba(0, 242, 255, 0.05);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    transition: 0.3s;
+}
+
+.upload-area:hover .upload-icon {
+    color: var(--primary-color);
+    transform: translateY(-5px);
+}
+
+/* Buttons */
+.cta-btn {
+    position: relative;
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.cta-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+}
+
+.cta-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(189, 0, 255, 0.5);
+}
+
+/* Preview */
+.preview-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    overflow: hidden;
+    max-height: 300px;
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.preview-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+}
+
+.icon-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    z-index: 20; /* Keep remove button above scanner */
+}
+
+.icon-btn:hover {
+    background: rgba(255, 0, 0, 0.8);
+}
+
+/* Results Modal / Overlay */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    animation: zoomIn 0.3s ease;
+    border: 1px solid var(--primary-color);
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: var(--text-muted);
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: #fff;
+}
+
+.result-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.real-result {
+    color: #00ff88;
+    text-shadow: 0 0 15px #00ff88;
+}
+
+.fake-result {
+    color: #ff0055;
+    text-shadow: 0 0 15px #ff0055;
+}
+
+/* Loading Animation */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    backdrop-filter: blur(5px);
+    border-radius: 12px;
+}
+
+.scanner-line {
+    width: 100%;
+    height: 2px;
+    background: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+    animation: scan 1.5s ease-in-out infinite;
+    position: absolute;
+}
+
+@keyframes scan {
+    0% {
+        top: 0%;
+        opacity: 0.5;
+    }
+
+    50% {
+        top: 100%;
+        opacity: 1;
+    }
+
+    100% {
+        top: 0%;
+        opacity: 0.5;
+    }
+}
+
+footer {
+    margin-top: 2rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* Auth Forms */
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+}
+
+.input-group input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    padding: 12px 15px 12px 40px;
+    border-radius: 8px;
+    color: #fff;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+}
+
+.auth-link {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.auth-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.auth-link a:hover {
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.nav-bar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    z-index: 10;
+}
+
+.user-greeting {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+}
+
+.logout-btn {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    transition: 0.3s;
+    border: 1px solid transparent;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 0, 85, 0.2);
+    border-color: #ff0055;
+    color: #ff0055;
+}
+
+.theory-text {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    text-align: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+}

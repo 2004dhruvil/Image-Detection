@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - DeepFake Detector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .nav-link {
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 10px;
+        }
+
+        .nav-link:hover {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-animation">
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+
+    <div class="nav-bar">
+        <span class="user-greeting">Hello, {{ user.username }}!</span>
+        <div>
+            <a href="{{ url_for('index') }}" class="nav-link"><i class="fas fa-home"></i> Home</a>
+            <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="container glass-panel" style="max-width: 800px;">
+        <header>
+            <h1 class="glow-text">Scan <span class="highlight">History</span></h1>
+            <p class="subtitle">Review your past deepfake analysis results</p>
+        </header>
+
+        <main>
+            <div class="scan-history" style="margin-top: 20px; text-align: left;">
+                <h3 style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px;">
+                    <i class="fas fa-history"></i> Total Scans: {{ total_scans }}
+                </h3>
+                
+                {% if history %}
+                <div style="max-height: 400px; overflow-y: auto; padding-right: 15px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 1rem;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">
+                                <th style="padding: 12px; text-align: left;">Image Name</th>
+                                <th style="padding: 12px; text-align: center;">Result</th>
+                                <th style="padding: 12px; text-align: center;">Confidence</th>
+                                <th style="padding: 12px; text-align: right;">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in history %}
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                                <td style="padding: 12px; text-align: left;"><i class="fas fa-file-image" style="color: rgba(255,255,255,0.5); margin-right: 8px;"></i> {{ record.filename }}</td>
+                                <td style="padding: 12px; text-align: center; font-weight: 600; color: {{ '#00ff88' if record.prediction_label == 'Real' else '#ff0055' }}">{{ record.prediction_label }}</td>
+                                <td style="padding: 12px; text-align: center;">{{ record.confidence }}</td>
+                                <td style="padding: 12px; text-align: right; opacity: 0.8; font-size: 0.9rem;">{{ record.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 40px 0; opacity: 0.7;">
+                    <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 15px; display: block;"></i>
+                    <p style="font-size: 1.1rem;">You haven't scanned any images yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 DeepFake AI Project</p>
+    </footer>
+
+</body>
+
+</html>

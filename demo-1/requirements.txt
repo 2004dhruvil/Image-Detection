@@ -1,0 +1,11 @@
+Flask
+werkzeug
+Flask-SQLAlchemy
+Flask-Login
+opencv-python
+numpy
+scikit-image
+scikit-learn
+joblib
+mysql-connector-python
+python-dotenv
